@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" fill="none">
+  <rect width="240" height="240" rx="16" fill="#f3f4f6"/>
+  <g transform="translate(40,40)" fill="#cbd5e1">
+    <rect x="0" y="0" width="160" height="160" rx="12" />
+    <text x="80" y="88" font-size="18" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial">No Image</text>
+  </g>
+</svg>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dose Calc Unit Tests - Browser Runner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+        .content {
+            padding: 30px;
+        }
+        .test-group {
+            margin-bottom: 25px;
+            border: 2px solid #f0f0f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .test-group-title {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            font-weight: bold;
+            border-bottom: 2px solid #e9ecef;
+            color: #2c3e50;
+        }
+        .test-case {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .test-case:last-child {
+            border-bottom: none;
+        }
+        .test-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+            font-size: 0.8em;
+        }
+        .test-status.pass {
+            background: #27ae60;
+        }
+        .test-status.fail {
+            background: #e74c3c;
+        }
+        .test-info {
+            flex: 1;
+        }
+        .test-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .test-detail {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 4px;
+        }
+        .summary {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+        }
+        .summary h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .summary-item {
+            text-align: center;
+        }
+        .summary-number {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        .summary-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .summary-item.pass .summary-number {
+            color: #27ae60;
+        }
+        .summary-item.fail .summary-number {
+            color: #e74c3c;
+        }
+        .summary-item.total .summary-number {
+            color: #3498db;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-run {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+        .btn-run:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .btn-clear {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+        .btn-clear:hover {
+            background: #d5dbdb;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            border-top: 1px solid #e9ecef;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #c7254e;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Dose Calculator Unit Tests</h1>
+            <p>Browser-based test runner untuk validasi fungsi-fungsi DoseCalc</p>
+        </div>
+        
+        <div class="content">
+            <div class="button-group">
+                <button class="btn-run" onclick="runAllTests()">▶ Jalankan Semua Test</button>
+                <button class="btn-clear" onclick="clearResults()">🗑 Hapus Hasil</button>
+            </div>
+
+            <div id="summary" class="summary" style="display: none;">
+                <h3>📊 Ringkasan Hasil</h3>
+                <div class="summary-row">
+                    <div class="summary-item pass">
+                        <div class="summary-number" id="passCount">0</div>
+                        <div class="summary-label">LULUS</div>
+                    </div>
+                    <div class="summary-item fail">
+                        <div class="summary-number" id="failCount">0</div>
+                        <div class="summary-label">GAGAL</div>
+                    </div>
+                    <div class="summary-item total">
+                        <div class="summary-number" id="totalCount">0</div>
+                        <div class="summary-label">TOTAL</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="results" style="display: none;">
+                <!-- Test results will be inserted here -->
+            </div>
+
+            <div id="placeholder" style="text-align: center; color: #999; padding: 40px;">
+                <p style="font-size: 3em; margin-bottom: 10px;">🔬</p>
+                <p>Klik "Jalankan Semua Test" untuk memulai pengujian</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>✓ Test runner ini menjalankan semua test tanpa memerlukan Node.js</p>
+        </div>
+    </div>
+
+    <script>
+        // Core DoseCalc functions (inline untuk kemudahan testing)
+        const DoseCalc = {
+            percentToMgPerMl(percent) {
+                const p = typeof percent === 'string' ? parseFloat(percent.replace('%', '')) : parseFloat(percent);
+                if (Number.isNaN(p)) return null;
+                return (p * 1000) / 100;
+            },
+            calculateMaxDoseMg(weightKg, mgPerKg) {
+                if (!weightKg || !mgPerKg) return null;
+                return weightKg * mgPerKg;
+            },
+            calculateMaxVolumeMl(maxDoseMg, concentrationMgPerMl) {
+                if (!maxDoseMg || !concentrationMgPerMl) return null;
+                return maxDoseMg / concentrationMgPerMl;
+            },
+            calculateMgFromVolume(volumeMl, concentrationMgPerMl) {
+                if (volumeMl == null || concentrationMgPerMl == null) return null;
+                return Number(volumeMl) * Number(concentrationMgPerMl);
+            },
+            calculateIBWKg(heightCm, gender) {
+                if (!heightCm) return null;
+                const inches = heightCm / 2.54;
+                if (gender === 'male') return 50 + 2.3 * (inches - 60);
+                if (gender === 'female') return 45.5 + 2.3 * (inches - 60);
+                return null;
+            }
+        };
+
+        // Test assertions
+        let testResults = [];
+
+        function assert(condition, testName, expected, actual) {
+            testResults.push({
+                name: testName,
+                passed: condition,
+                expected: expected,
+                actual: actual
+            });
+        }
+
+        function assertEquals(actual, expected, testName) {
+            const passed = actual === expected;
+            testResults.push({
+                name: testName,
+                passed: passed,
+                expected: expected,
+                actual: actual
+            });
+        }
+
+        function assertApprox(actual, expected, tolerance, testName) {
+            const passed = Math.abs(actual - expected) <= tolerance;
+            testResults.push({
+                name: testName,
+                passed: passed,
+                expected: expected,
+                actual: actual
+            });
+        }
+
+        // Test suites
+        function runAllTests() {
+            testResults = [];
+            
+            console.log('Running all tests...');
+            
+            // Test Suite 1: Konversi Konsentrasi
+            testPercentToMgPerMl();
+            
+            // Test Suite 2: Perhitungan Dosis Maksimal
+            testCalculateMaxDoseMg();
+            
+            // Test Suite 3: Perhitungan Volume Maksimal
+            testCalculateMaxVolumeMl();
+            
+            // Test Suite 4: Konversi Volume ke mg
+            testCalculateMgFromVolume();
+            
+            // Test Suite 5: Perhitungan IBW
+            testCalculateIBWKg();
+            
+            displayResults();
+        }
+
+        function testPercentToMgPerMl() {
+            assertEquals(DoseCalc.percentToMgPerMl('2%'), 20, 'Konversi 2% → 20 mg/mL');
+            assertEquals(DoseCalc.percentToMgPerMl('0.5%'), 5, 'Konversi 0.5% → 5 mg/mL');
+            assertEquals(DoseCalc.percentToMgPerMl('1%'), 10, 'Konversi 1% → 10 mg/mL');
+            assertEquals(DoseCalc.percentToMgPerMl(2), 20, 'Konversi 2 (numeric) → 20 mg/mL');
+            assertEquals(DoseCalc.percentToMgPerMl('invalid%'), null, 'Input invalid → null');
+        }
+
+        function testCalculateMaxDoseMg() {
+            assertEquals(DoseCalc.calculateMaxDoseMg(70, 4.5), 315, 'Max dosis: 70 kg × 4.5 mg/kg = 315 mg');
+            assertEquals(DoseCalc.calculateMaxDoseMg(50, 2), 100, 'Max dosis: 50 kg × 2 mg/kg = 100 mg');
+            assertEquals(DoseCalc.calculateMaxDoseMg(0, 4.5), null, 'Berat 0 → null');
+            assertEquals(DoseCalc.calculateMaxDoseMg(70, null), null, 'mg/kg null → null');
+            assertEquals(DoseCalc.calculateMaxDoseMg(80, 3.5), 280, 'Max dosis: 80 kg × 3.5 mg/kg = 280 mg');
+        }
+
+        function testCalculateMaxVolumeMl() {
+            assertEquals(DoseCalc.calculateMaxVolumeMl(315, 10), 31.5, 'Volume max: 315 mg ÷ 10 mg/mL = 31.5 mL');
+            assertEquals(DoseCalc.calculateMaxVolumeMl(100, 5), 20, 'Volume max: 100 mg ÷ 5 mg/mL = 20 mL');
+            assertEquals(DoseCalc.calculateMaxVolumeMl(null, 10), null, 'Dosis null → null');
+            assertEquals(DoseCalc.calculateMaxVolumeMl(200, 0), null, 'Konsentrasi 0 → null');
+            assertEquals(DoseCalc.calculateMaxVolumeMl(175, 5), 35, 'Volume max: 175 mg ÷ 5 mg/mL = 35 mL');
+        }
+
+        function testCalculateMgFromVolume() {
+            assertEquals(DoseCalc.calculateMgFromVolume(10, 10), 100, 'mg: 10 mL × 10 mg/mL = 100 mg');
+            assertEquals(DoseCalc.calculateMgFromVolume(5, 20), 100, 'mg: 5 mL × 20 mg/mL = 100 mg');
+            assertEquals(DoseCalc.calculateMgFromVolume(0, 10), 0, 'Volume 0 → 0 mg');
+            assertEquals(DoseCalc.calculateMgFromVolume(null, 10), null, 'Volume null → null');
+            assertEquals(DoseCalc.calculateMgFromVolume(31.5, 10), 315, 'mg: 31.5 mL × 10 mg/mL = 315 mg');
+        }
+
+        function testCalculateIBWKg() {
+            assertApprox(DoseCalc.calculateIBWKg(170, 'male'), 50 + 2.3 * (67 - 60), 0.1, 'IBW pria 170 cm');
+            assertApprox(DoseCalc.calculateIBWKg(160, 'female'), 45.5 + 2.3 * (63 - 60), 0.1, 'IBW wanita 160 cm');
+            assertEquals(DoseCalc.calculateIBWKg(null, 'male'), null, 'Tinggi null → null');
+            assertEquals(DoseCalc.calculateIBWKg(170, 'unknown'), null, 'Gender tidak valid → null');
+        }
+
+        function displayResults() {
+            const resultDiv = document.getElementById('results');
+            const summaryDiv = document.getElementById('summary');
+            const placeholder = document.getElementById('placeholder');
+            
+            placeholder.style.display = 'none';
+            summaryDiv.style.display = 'block';
+            resultDiv.style.display = 'block';
+            
+            const passCount = testResults.filter(t => t.passed).length;
+            const failCount = testResults.filter(t => !t.passed).length;
+            const totalCount = testResults.length;
+            
+            document.getElementById('passCount').textContent = passCount;
+            document.getElementById('failCount').textContent = failCount;
+            document.getElementById('totalCount').textContent = totalCount;
+            
+            // Group by type
+            const testGroups = {
+                'Konversi Konsentrasi': testResults.filter(t => t.name.includes('Konversi')),
+                'Perhitungan Dosis Maksimal': testResults.filter(t => t.name.includes('Max dosis')),
+                'Perhitungan Volume Maksimal': testResults.filter(t => t.name.includes('Volume max') && !t.name.includes('Max dosis')),
+                'Konversi Volume ke mg': testResults.filter(t => t.name.includes('mg: ') || (t.name.includes('Volume') && t.name.includes('→'))),
+                'Perhitungan IBW': testResults.filter(t => t.name.includes('IBW'))
+            };
+            
+            let html = '';
+            for (const [groupName, tests] of Object.entries(testGroups)) {
+                if (tests.length === 0) continue;
+                
+                html += `<div class="test-group">`;
+                html += `<div class="test-group-title">🔹 ${groupName}</div>`;
+                
+                tests.forEach(test => {
+                    const statusIcon = test.passed ? '✓' : '✗';
+                    const statusClass = test.passed ? 'pass' : 'fail';
+                    html += `
+                        <div class="test-case">
+                            <div class="test-status ${statusClass}">${statusIcon}</div>
+                            <div class="test-info">
+                                <div class="test-name">${test.name}</div>
+                                <div class="test-detail">
+                                    Expected: <code>${test.expected}</code> | Actual: <code>${test.actual}</code>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+            
+            resultDiv.innerHTML = html;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('summary').style.display = 'none';
+            document.getElementById('placeholder').style.display = 'block';
+            testResults = [];
+        }
+
+        // Auto-run on page load
+        window.addEventListener('load', () => {
+            console.log('Test runner siap. DoseCalc loaded.');
+        });
+    </script>
+</body>
+</html>

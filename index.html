@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=5.0">
+    <link rel="icon" type="image/png" href="/LOGO_UMP-removebg.png">
+    <title>Kalkulator Dosis Obat Anestesi - Anestesiologi-A</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navbar-bg {
+            background: linear-gradient(135deg, #0e0969 0%, #100a81 100%);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #afafaf;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #afafaf;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #afafaf;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        .logo-image {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0e0969 0%, #110a84 100%);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(135deg, #ff2828 0%, #ffffff 100%); min-height: 100vh; color: #333; line-height: 1.6; }
+        .container { max-width: 2000px; margin: 0 auto; background: white; min-height: 100vh; margin-top: 80px; }
+        .header { color: white; text-align: center; position: relative; overflow: hidden; background-image: url('images/kwu.png'); background-size: cover; background-position: center; background-repeat: no-repeat; aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 20px; }
+        .header::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(30,60,114,0.55), rgba(42,82,152,0.45)); z-index: 0; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); position: relative; z-index: 1; }
+        .header p { font-size: 1.2em; opacity: 0.95; position: relative; z-index: 1; max-width: 1100px; }
+        .warning-banner { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 25px; text-align: center; font-weight: bold; font-size: 1.2em; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        .main-content { padding: 40px; max-width: 1400px; margin: 0 auto; }
+        .card { background: #f8f9fa; border-radius: 2px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin-bottom: 40px; transition: transform 0.3s ease; }
+        .card:hover { transform: translateY(-5px); }
+        .section-header { background: linear-gradient(135deg, #002affd0); color: white; padding: 20px; }
+        .section-header h2 { font-size: 2em; margin: 0; }
+        .patient-form { padding: 40px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 600; color: #2c3e50; margin-bottom: 10px; font-size: 1.1em; }
+        .form-group input, .form-group select { padding: 15px; border: 2px solid #e9ecef; border-radius: 2px; font-size: 1em; transition: all 0.3s ease; background: white; }
+        .form-group select[multiple] { min-height: 120px; }
+        .form-group small { margin-top: 5px; display: block; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); }
+        .drug-section { padding: 0; }
+        .drug-tabs { display: flex; flex-wrap: wrap; gap: 10px; padding: 30px; background: white; }
+        .tab-btn { padding: 12px 25px; border: 2px solid #e9ecef; background: white; color: #666; border-radius: 2px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 0.95em; }
+        .tab-btn:hover { border-color: #3498db; color: #3498db; transform: translateY(-2px); }
+        .tab-btn.active { background: linear-gradient(135deg, #3498db, #2980b9); color: white; border-color: transparent; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); }
+        .search-box { padding: 0 30px 30px; background: white; }
+        .search-box input { width: 100%; padding: 15px 20px; border: 2px solid #e9ecef; border-radius: 2px; font-size: 1.1em; transition: all 0.3s ease; }
+        .search-box input:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1); }
+        .drug-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; padding: 30px; background: #f8f9fa; }
+        .drug-card { background: white; border-radius: 2px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; border: 2px solid transparent; cursor: pointer; }
+        .drug-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); border-color: #3498db; }
+        .drug-card.selected { border-color: #27ae60; background: linear-gradient(135deg, #f0fff4, #e8f5e9); box-shadow: 0 10px 30px rgba(39, 174, 96, 0.2); }
+        .drug-card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .drug-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 2px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; }
+        .drug-card-meta h3 { margin: 0 0 6px 0; font-size: 1.4em; color: #2c3e50; }
+        .drug-routes, .drug-onset { color: #666; font-size: 0.95em; margin-bottom: 10px; }
+        .select-btn { width: 100%; padding: 12px 20px; background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; border-radius: 2px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 1em; margin-top: 15px; }
+        .select-btn:hover { background: linear-gradient(135deg, #2980b9, #1f4e79); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
+        .drug-card.selected .select-btn { background: linear-gradient(135deg, #27ae60, #229954); }
+        .selected-section { padding: 30px; background: white; border-top: 2px solid #e9ecef; }
+        .selected-section h3 { color: #2c3e50; margin-bottom: 20px; font-size: 1.5em; }
+        .selected-drugs-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; min-height: 50px; }
+        .no-selection { color: #999; font-style: italic; }
+        .selected-tag { display: inline-flex; align-items: center; background: linear-gradient(135deg, #27ae60, #229954); color: white; padding: 10px 20px; border-radius: 25px; font-weight: 500; gap: 10px; }
+        .selected-tag button { background: rgba(255,255,255,0.3); border: none; color: white; font-size: 1.3em; font-weight: bold; cursor: pointer; padding: 0; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .selected-tag button:hover { background: rgba(255,255,255,0.5); transform: rotate(90deg); }
+        .calculate-btn { width: 100%; max-width: 500px; padding: 20px 30px; background: linear-gradient(135deg, #e67e22, #d35400); color: white; border: none; border-radius: 15px; font-size: 1.4em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(230, 126, 34, 0.3); display: block; margin: 0 auto; }
+        .calculate-btn:hover:not(:disabled) { background: linear-gradient(135deg, #d35400, #ba4a00); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(230, 126, 34, 0.4); }
+        .calculate-btn:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
+        .results-section { background: linear-gradient(135deg, #f8f9fa, #e9ecef); }
+        .results-container { padding: 30px; }
+        .patient-summary-card { background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: 30px; border-radius: 2px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(52, 152, 219, 0.2); }
+        .patient-summary-card h3 { margin-bottom: 20px; font-size: 1.6em; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .summary-grid div { background: rgba(255,255,255,0.15); padding: 15px; border-radius: 2px; }
+        .result-card { background: white; border-radius: 2px; padding: 40px; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border-left: 6px solid #3498db; animation: fadeIn 0.5s ease forwards; }
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #e9ecef; }
+        .result-header h3 { font-size: 2em; color: #2c3e50; }
+        .age-badge { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; padding: 8px 20px; border-radius: 2px; font-weight: bold; font-size: 0.9em; }
+        .dosing-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .dose-card { background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 25px; border-radius: 2px; border-left: 4px solid #3498db; transition: all 0.3s ease; }
+        .dose-card:hover { transform: translateX(5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .dose-type { font-size: 1.1em; font-weight: bold; color: #3498db; margin-bottom: 10px; }
+        .dose-value { font-size: 1.6em; font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
+        .dose-perkg { font-size: 0.9em; color: #666; font-style: italic; }
+        .admin-section, .warnings-section, .contraindications-section, .sideeffects-section, .monitoring-section { margin-bottom: 25px; padding: 25px; border-radius: 2px; }
+        .admin-section { background: #e8f5e9; border-left: 4px solid #27ae60; }
+        .warnings-section { background: #fff3cd; border-left: 4px solid #f39c12; }
+        .contraindications-section { background: #fdf2f2; border-left: 4px solid #e74c3c; }
+        .sideeffects-section { background: #fef5e7; border-left: 4px solid #e67e22; }
+        .monitoring-section { background: #e3f2fd; border-left: 4px solid #2196f3; }
+        .admin-section h4, .warnings-section h4, .contraindications-section h4, .sideeffects-section h4, .monitoring-section h4 { font-size: 1.4em; margin-bottom: 15px; color: #2c3e50; }
+        .admin-section ul, .warnings-section ul, .contraindications-section ul, .sideeffects-section ul, .monitoring-section ul { list-style: none; padding: 0; }
+        .admin-section li, .warnings-section li, .contraindications-section li, .sideeffects-section li, .monitoring-section li { padding: 10px 0 10px 30px; position: relative; line-height: 1.6; }
+        .admin-section li::before, .warnings-section li::before, .contraindications-section li::before, .sideeffects-section li::before, .monitoring-section li::before { content: '▸'; position: absolute; left: 0; font-weight: bold; font-size: 1.2em; }
+        .admin-section li::before { color: #27ae60; }
+        .warnings-section li::before { color: #f39c12; }
+        .contraindications-section li::before { color: #e74c3c; }
+        .sideeffects-section li::before { color: #e67e22; }
+        .monitoring-section li::before { color: #2196f3; }
+        .footer { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 30px; text-align: center; }
+        .footer p { margin: 8px 0; opacity: 0.9; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .image-modal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .image-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+        .image-modal-content { position: relative; max-width: 90%; max-height: 90%; z-index: 10000; display: flex; flex-direction: column; align-items: center; }
+        .image-modal-content img { max-width: 100%; max-height: 80vh; border-radius: 2px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .image-modal-caption { margin-top: 12px; color: #fff; text-align: center; font-weight: 600; text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
+        .image-modal-close { position: absolute; top: -18px; right: -18px; background: #fff; color: #333; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.4em; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+        
+        @media (max-width: 768px) { 
+            .main-content { padding: 20px; } 
+            .header h1 { font-size: 1.8em; } 
+            .form-grid { grid-template-columns: 1fr; } 
+            .drug-grid { grid-template-columns: 1fr; } 
+            .dosing-section { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar-bg shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <img src="LOGO_UMP-removebg.png" alt="Logo" class="logo-image rounded-lg">
+                    <span class="text-white text-xl font-semibold tracking-wide">Kalkulator Dosis Obat Anestesi</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#mobileMenuBtn" class="nav-link text-white font-medium py-2">Beranda</a>
+                    <a href="#patientSection" class="nav-link text-white font-medium py-2">Data Pasien</a>
+                    <a href="#drugSection" class="nav-link text-white font-medium py-2">Pilihan Obat</a>
+                    <a href="#calculateBtn" class="nav-link text-white font-medium py-2">Hitung Dosis</a>
+                    <a href="#footer" class="nav-link text-white font-medium py-2">Tentang</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden text-white p-2 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 h-full w-64 navbar-bg shadow-2xl z-50 md:hidden">
+        <div class="flex flex-col h-full">
+            <!-- Close Button -->
+            <div class="flex justify-end p-4">
+                <button id="closeMobileMenu" class="text-white p-2 focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Links -->
+            <div class="flex flex-col space-y-4 px-6">
+                <a href="#mobileMenuBtn" class="text-white hover:text-blue-400 py-3 border-b border-gray-700 transition">Beranda</a>
+                <a href="#patientSection" class="text-white hover:text-blue-400 py-3 border-b border-gray-700 transition">Data Pasien</a>
+                <a href="#drugSection" class="text-white hover:text-blue-400 py-3 border-b border-gray-700 transition">Pilihan Obat</a>
+                <a href="#calculateBtn" class="text-white hover:text-blue-400 py-3 border-b border-gray-700 transition">Hitung Dosis</a>
+                <a href="#footer" class="text-white hover:text-blue-400 py-3 border-b border-gray-700 transition">Tentang</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay Background -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+    <div class="container">
+        <header class="header">
+            <h1>Kalkulator Dosis Obat Anestesi</h1>
+            <p>Kelompok 9 • Tugas Kewirausahaan — Anestesiologi Kelas A
+            </p>
+        </header>
+
+        <main class="main-content">
+            <section class="patient-section card" id="patientSection">
+                <div class="section-header">
+                    <h2>Data Pasien</h2>
+                </div>
+                <form id="patientForm" class="patient-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="age">Usia (tahun):</label>
+                            <input type="number" id="age" min="0" max="120" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Berat Badan (kg):</label>
+                            <input type="number" id="weight" step="0.1" min="0.1" max="300" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Tinggi Badan (cm):</label>
+                            <input type="number" id="height" min="30" max="250" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Jenis Kelamin:</label>
+                            <select id="gender" required>
+                                <option value="">Pilih</option>
+                                <option value="male">Laki-laki</option>
+                                <option value="female">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="asa">Status ASA:</label>
+                            <select id="asa" required>
+                                <option value="">Pilih Status ASA</option>
+                                <option value="1">ASA I - Pasien Sehat Normal</option>
+                                <option value="2">ASA II - Penyakit Sistemik Ringan</option>
+                                <option value="3">ASA III - Penyakit Sistemik Berat</option>
+                                <option value="4">ASA IV - Ancaman Jiwa Konstan</option>
+                                <option value="5">ASA V - Moribund</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="procedure">Jenis Prosedur:</label>
+                            <select id="procedure" required>
+                                <option value="">Pilih Jenis Prosedur</option>
+                                <option value="general">Anestesi Umum (Bedah Mayor)</option>
+                                <option value="sedation">Sedasi Sadar (Prosedur Diagnostik)</option>
+                                <option value="regional">Anestesi Regional (Spinal/Epidural)</option>
+                                <option value="icu">Sedasi ICU (Perawatan Intensif)</option>
+                                <option value="local">Anestesi Lokal (Bedah Minor)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Durasi Prosedur (menit):</label>
+                            <input type="number" id="duration" min="5" max="720" placeholder="Contoh: 60">
+                        </div>
+                        <div class="form-group">
+                            <label for="allergy">Riwayat Alergi:</label>
+                            <select id="allergy" multiple size="4">
+                                <option value="none">Tidak Ada Alergi</option>
+                                <option value="seafood">Seafood/Makanan Laut</option>
+                                <option value="nuts">Kacang-kacangan</option>
+                                <option value="milk">Susu Sapi</option>
+                                <option value="egg">Telur</option>
+                                <option value="soy">Kedelai</option>
+                            </select>
+                            <small style="color: #666; font-size: 0.85em;">Tekan Ctrl/Cmd untuk pilih lebih dari satu</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="comorbid">Penyakit Penyerta:</label>
+                            <select id="comorbid" multiple size="5">
+                                <option value="none">Tidak Ada</option>
+                                <option value="hypertension">Hipertensi</option>
+                                <option value="diabetes">Diabetes Melitus</option>
+                                <option value="asthma">Asma/PPOK</option>
+                                <option value="heart">Penyakit Jantung</option>
+                                <option value="kidney">Penyakit Ginjal</option>
+                                <option value="liver">Penyakit Hati</option>
+                                <option value="epilepsy">Epilepsi</option>
+                                <option value="thyroid">Gangguan Tiroid</option>
+                                <option value="malignant-hyperthermia">Riwayat Hipertermia Maligna</option>
+                            </select>
+                            <small style="color: #666; font-size: 0.85em;">Tekan Ctrl/Cmd untuk pilih lebih dari satu</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="medications">Obat yang Sedang Dikonsumsi:</label>
+                            <select id="medications" multiple size="5">
+                                <option value="none">Tidak Ada</option>
+                                <option value="ace-inhibitor">ACE Inhibitor/ARB</option>
+                                <option value="beta-blocker">Beta Blocker</option>
+                                <option value="anticoagulant">Antikoagulan (Warfarin/Aspirin)</option>
+                                <option value="antidiabetic">Antidiabetik</option>
+                                <option value="nsaid">NSAID</option>
+                                <option value="steroid">Kortikosteroid</option>
+                                <option value="antiepileptic">Antiepilepsi</option>
+                                <option value="maoi">MAOI/Antidepresan</option>
+                                <option value="aminoglycoside">Antibiotik Aminoglikosida</option>
+                            </select>
+                            <small style="color: #666; font-size: 0.85em;">Tekan Ctrl/Cmd untuk pilih lebih dari satu</small>
+                        </div>
+                    </div>
+
+                    <!-- TANDA-TANDA VITAL & PARAMETER FISIOLOGIS -->
+                    <div class="form-grid" style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e9ecef;">
+                        <h3 style="grid-column: 1/-1; color: #2c3e50; margin-bottom: 10px;">📊 Tanda-Tanda Vital & Parameter Fisiologis</h3>
+                        
+                        <div class="form-group">
+                            <label for="bloodType">Golongan Darah:</label>
+                            <select id="bloodType" required>
+                                <option value="">Pilih Golongan Darah</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sysBP">Tekanan Darah Sistolik (mmHg):</label>
+                            <input type="number" id="sysBP" min="50" max="300" step="1" placeholder="Contoh: 120">
+                        </div>
+                        <div class="form-group">
+                            <label for="diaBP">Tekanan Darah Diastolik (mmHg):</label>
+                            <input type="number" id="diaBP" min="30" max="200" step="1" placeholder="Contoh: 80">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="heartRate">Nadi/Denyut Jantung (x/menit):</label>
+                            <input type="number" id="heartRate" min="30" max="200" step="1" placeholder="Contoh: 72">
+                        </div>
+                        <div class="form-group">
+                            <label for="respirationRate">Laju Pernapasan (x/menit):</label>
+                            <input type="number" id="respirationRate" min="8" max="60" step="1" placeholder="Contoh: 16">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bodyTemp">Suhu Tubuh (°C):</label>
+                            <input type="number" id="bodyTemp" min="32" max="42" step="0.1" placeholder="Contoh: 37.0">
+                        </div>
+                        <div class="form-group">
+                            <label for="spo2">SpO₂ (%):</label>
+                            <input type="number" id="spo2" min="50" max="100" step="1" placeholder="Contoh: 98">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bloodSugar">Gula Darah Puasa (mg/dL):</label>
+                            <input type="number" id="bloodSugar" min="40" max="500" step="1" placeholder="Contoh: 100">
+                        </div>
+                        <div class="form-group">
+                            <label for="hemoglobin">Hemoglobin (g/dL):</label>
+                            <input type="number" id="hemoglobin" min="5" max="20" step="0.1" placeholder="Contoh: 12.5">
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <section class="drug-section card" id="drugSection">
+                <div class="section-header">
+                    <h2>Pilihan Obat</h2>
+                </div>
+                
+                <div class="drug-tabs">
+                    <button class="tab-btn active" data-category="all">Semua Obat</button>
+                    <button class="tab-btn" data-category="iv-induction">IV Induksi</button>
+                    <button class="tab-btn" data-category="inhalation">Inhalasi</button>
+                    <button class="tab-btn" data-category="opioid">Opioid</button>
+                    <button class="tab-btn" data-category="muscle-relaxant">Pelumpuh Otot</button>
+                    <button class="tab-btn" data-category="local">Lokal Anestesi</button>
+                    <button class="tab-btn" data-category="sedasi">Sedasi</button>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="drugSearch" placeholder="🔍 Cari obat anestesi...">
+                </div>
+
+                <div class="drug-grid" id="drugGrid"></div>
+
+                <div class="selected-section">
+                    <h3> Obat yang Dipilih:</h3>
+                    <div id="selectedDrugs" class="selected-drugs-list">
+                        <p class="no-selection">Belum ada obat yang dipilih</p>
+                    </div>
+                  <div id="liveCalc" style="padding:20px; border:1px dashed #e9ecef; margin-bottom:16px; border-radius:6px; display:none; background:#fcfcfc;">
+                    <h4 style="margin:0 0 10px 0;">Pratinjau Live</h4>
+                    <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
+                      <label style="min-width:120px;">Dose (mg/kg):</label>
+                      <input id="dosePerKg" type="number" step="0.1" min="0" style="flex:1; padding:6px;" placeholder="Contoh: 2.5" />
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
+                      <label style="min-width:120px;">Dose total (mg):</label>
+                      <input id="doseTotalMg" type="number" step="0.1" min="0" style="flex:1; padding:6px;" placeholder="Isi total mg atau biarkan kosong" />
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
+                      <label style="min-width:120px;">Keterangan:</label>
+                      <div style="flex:1; color:#555;">Masukkan salah satu: `Dose (mg/kg)` atau `Dose total (mg)`. Kedua kolom akan tersinkronisasi otomatis berdasarkan berat pasien.</div>
+                    </div>
+                    <div id="doseWarning" style="margin-top:10px; padding:10px; border-radius:4px; display:none; font-size:0.95em;"></div>
+                  </div>
+                  <button id="calculateBtn" class="calculate-btn">
+                    Hitung Dosis Anestesi
+                  </button>
+                </div>
+            </section>
+
+            <section class="results-section card" id="resultsSection" style="display: none;">
+                <div class="section-header">
+                    <h2> Hasil Perhitungan Dosis</h2>
+                </div>
+                <div id="resultsContainer" class="results-container"></div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="gradient-bg text-white py-12 sm:py-16" id="footer">
+            <div class="w-full px-4 sm:px-6 lg:px-8">
+                <!-- Grid layout: responsive (1 kolom mobile, 2 kolom tablet, 4 kolom desktop) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
+                    
+                    <!-- Kolom 1: Tentang -->
+                    <div>
+                        <div class="flex items-center mb-4 sm:mb-6">
+                            <h3 class="text-2xl sm:text-3xl font-bold">Kelompok 9</h3>
+                        </div>
+                        <p class="text-white/90 leading-relaxed mb-4 text-xs sm:text-sm text-justify">
+                            "Di era medis modern tahun 2026, ketepatan adalah kunci keselamatan pasien. Kami menciptakan website kalkulator dosis obat anestesi ini yang disesuaikan dengan parameter spesifik pasien seperti berat badan, usia, dan kondisi komorbid. Seluruh data kami merujuk pada protokol internasional terbaru untuk membantu praktisi anestesi memberikan pelayanan yang aman, efisien dan ter-dokumentasikan langsung."
+                        </p>
+                    </div>
+                    
+                    <!-- Kolom 2: Anggota Kelompok -->
+                    <div id="footerAnggota">
+                        <h4 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Anggota Kelompok</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                    <span class="text-sm">1. Muhammad Azmi Mubarok_2411100010</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <span class="text-sm">2. Nikmaturahmah_2411100017</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <span class="text-sm">3. Angelica Valentine_2411100024</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <span class="text-sm">4. Rahma Dwi Putri_2411100040</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <span class="text-sm">5. Septi Wahyuni_2411100042</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <span class="text-sm">6. Hanifah Yumna Prima F_2411100043</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Kolom 3: Menu Cepat -->
+                    <div>
+                        <h4 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Menu Cepat</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#mobileMenuBtn" class="text-white/90 hover:text-white hover:translate-x-1 inline-block transition-all text-sm">Beranda</a></li>
+                          <li><a href="#patientSection" class="text-white/90 hover:text-white hover:translate-x-1 inline-block transition-all text-sm">Data Pasien</a></li>
+                            <li><a href="#drugSection" class="text-white/90 hover:text-white hover:translate-x-1 inline-block transition-all text-sm">Pilihan Obat</a></li>
+                            <li><a href="#calculateBtn" class="text-white/90 hover:text-white hover:translate-x-1 inline-block transition-all text-sm">Hitung Dosis</a></li>
+                        </ul>
+                    </div>
+                                        
+                    <!-- Kolom 4: Kontak (di sebelah kanan) -->
+                    <div id="footerKontak">
+                        <h4 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Kontak</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                <a href="mailto:azmimubarok92@gmail.com" class="flex items-center gap-2 text-white/90 hover:text-white transition-colors" aria-label="Email Azmi">
+                                    <i class="fas fa-envelope text-lg" aria-hidden="true"></i>
+                                    <span class="text-sm">azmimubarok92@gmail.com</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                
+                <!-- Copyright -->
+                <div class="border-t border-white/20 pt-6 sm:pt-8 text-center">
+                    <p class="text-white/80 text-xs sm:text-sm">&copy; 2026 Kalkulator Dosis Anestesi - Kelompok 9. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="imageModal" class="image-modal" style="display:none;">
+        <div class="image-modal-backdrop"></div>
+        <div class="image-modal-content">
+            <button id="imageModalClose" class="image-modal-close">×</button>
+            <img id="imageModalImg" src="" alt="Preview" />
+            <div id="imageModalCaption" class="image-modal-caption"></div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const overlay = document.getElementById('overlay');
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        const navLinks = document.querySelectorAll('a.nav-link');
+
+        // Open Mobile Menu
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Close Mobile Menu
+        const closeMenu = () => {
+            mobileMenu.classList.remove('active');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        closeMobileMenu.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        // Close menu when clicking a link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                    // Update active link
+                    updateActiveLink(this.getAttribute('href'));
+                }
+            });
+        });
+
+        // Update active link based on href
+        function updateActiveLink(targetId) {
+            // Remove active class from all links
+            document.querySelectorAll('a.nav-link, .mobile-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to matching links
+            document.querySelectorAll(`a[href="${targetId}"]`).forEach(link => {
+                link.classList.add('active');
+            });
+        }
+
+        // Detect active section on scroll
+        function highlightNavLink() {
+            const sections = [
+                { id: '#patientSection', element: document.getElementById('patientSection') },
+                { id: '#drugSection', element: document.getElementById('drugSection') },
+                { id: '#resultsSection', element: document.getElementById('resultsSection') },
+                { id: '#footer', element: document.getElementById('footer') }
+            ];
+
+            let currentSection = null;
+            
+            sections.forEach(section => {
+                if (section.element) {
+                    const sectionTop = section.element.offsetTop - 150;
+                    const sectionBottom = sectionTop + section.element.offsetHeight;
+                    
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                        currentSection = section.id;
+                    }
+                }
+            });
+
+            if (currentSection) {
+                updateActiveLink(currentSection);
+            }
+        }
+
+        // Navbar scroll effect and active link detection
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-xl');
+            } else {
+                navbar.classList.remove('shadow-xl');
+            }
+            
+            // Update active link on scroll
+            highlightNavLink();
+        });
+
+        // Initialize active link on page load
+        window.addEventListener('load', () => {
+            highlightNavLink();
+        });
+    </script>
+
+    <script>
+// Navbar Toggle & Smooth Scroll
+const navbarToggle = document.getElementById('navbarToggle');
+const navbarMenu = document.getElementById('navbarMenu');
+
+if (navbarToggle) {
+    navbarToggle.addEventListener('click', () => {
+        navbarMenu.classList.toggle('active');
+    });
+    
+    const navLinks = navbarMenu.querySelectorAll('.navbar-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navbarMenu.classList.remove('active');
+        });
+    });
+}
+
+// Smooth Scroll Function - handles both navbar (1 param) and old code (2 params)
+function scrollToSection(sectionIdOrEvent, sectionId) {
+    let targetId = sectionId;
+    
+    // If called with single parameter (from navbar onclick)
+    if (!sectionId && typeof sectionIdOrEvent === 'string') {
+        targetId = sectionIdOrEvent;
+    } else if (sectionIdOrEvent && sectionIdOrEvent.preventDefault) {
+        // If first param is an event, second param is the sectionId
+        sectionIdOrEvent.preventDefault();
+        targetId = sectionId;
+    }
+    
+    const element = document.getElementById(targetId);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+
+// Data obat di-load dari `drugs.json` untuk memudahkan audit & versi
+let drugs = [];
+function loadDrugs() {
+  return fetch('drugs.json')
+    .then(r => r.json())
+    .then(data => {
+      drugs = data;
+      // Ensure UI renders after drugs loaded
+      renderDrugCards();
+      updateSelectedDrugs();
+    })
+    .catch(err => {
+      console.error('Gagal memuat drugs.json, fallback ke array kosong', err);
+      drugs = [];
+      renderDrugCards();
+    });
+}
+loadDrugs();
+
+const allergyNames = {
+  seafood: "Seafood/Makanan Laut", nuts: "Kacang-kacangan", milk: "Susu Sapi", egg: "Telur", soy: "Kedelai"
+};
+
+const comorbidNames = {
+  hypertension: "Hipertensi", diabetes: "Diabetes Melitus", asthma: "Asma/PPOK", heart: "Penyakit Jantung",
+  kidney: "Penyakit Ginjal", liver: "Penyakit Hati", epilepsy: "Epilepsi", thyroid: "Gangguan Tiroid",
+  "malignant-hyperthermia": "Riwayat Hipertermia Maligna"
+};
+
+const medicationNames = {
+  "ace-inhibitor": "ACE Inhibitor/ARB", "beta-blocker": "Beta Blocker", anticoagulant: "Antikoagulan",
+  antidiabetic: "Antidiabetik", nsaid: "NSAID", steroid: "Kortikosteroid", antiepileptic: "Antiepilepsi",
+  maoi: "MAOI/Antidepresan", aminoglycoside: "Antibiotik Aminoglikosida"
+};
+
+let selectedDrugs = [];
+
+document.getElementById('drugGrid').addEventListener('click', function(e) {
+  if (e.target.classList.contains('select-btn')) {
+    const id = e.target.dataset.id;
+    if (!selectedDrugs.includes(id)) {
+      selectedDrugs.push(id);
+      updateSelectedDrugs();
+      // set live calc controls to this drug for quick preview
+      setLiveCalcForDrug(id);
+    }
+  }
+});
+
+function setLiveCalcForDrug(drugId) {
+  const drug = drugs.find(d => d.id === drugId);
+  if (!drug) return;
+  const concInput = document.getElementById('concentrationInput');
+  const weight = parseFloat(document.getElementById('weight').value) || 0;
+  // Prefill concentration
+  if (drug.concentration_mg_per_ml) concInput.value = drug.concentration_mg_per_ml + ' mg/mL';
+  else if (drug.concentration) concInput.value = drug.concentration;
+  else concInput.value = '';
+  computeLivePreview();
+}
+
+function updateSelectedDrugs() {
+  const container = document.getElementById('selectedDrugs');
+  container.innerHTML = '';
+  if (selectedDrugs.length === 0) {
+    container.innerHTML = '<p class="no-selection">Belum ada obat yang dipilih</p>';
+    document.getElementById('calculateBtn').disabled = true;
+    updateLiveCalcUI();
+    updateCalculateReason();
+    return;
+  }
+  selectedDrugs.forEach(id => {
+    const drug = drugs.find(d => d.id === id);
+    const tag = document.createElement('span');
+    tag.className = 'selected-tag';
+    tag.innerHTML = `${drug.name} <button data-id="${id}">&times;</button>`;
+    container.appendChild(tag);
+  });
+  document.getElementById('calculateBtn').disabled = false;
+  updateLiveCalcUI();
+  updateCalculateReason();
+}
+
+document.getElementById('selectedDrugs').addEventListener('click', function(e) {
+  if (e.target.tagName === 'BUTTON') {
+    const id = e.target.dataset.id;
+    selectedDrugs = selectedDrugs.filter(d => d !== id);
+    updateSelectedDrugs();
+  }
+});
+
+function getContraindicationWarnings(allergies, comorbidities, medications, selectedDrugIds) {
+  const warnings = [];
+  selectedDrugIds.forEach(drugId => {
+    const drug = drugs.find(d => d.id === drugId);
+    if (!drug) return;
+    const drugWarnings = [];
+    if (allergies && allergies.length > 0) {
+      allergies.forEach(allergy => {
+        if (allergy !== 'none' && drug.allergyContra.includes(allergy)) {
+          drugWarnings.push(`⚠️ KONTRAINDIKASI: Pasien memiliki alergi ${allergyNames[allergy]}`);
+        }
+      });
+    }
+    if (comorbidities && comorbidities.length > 0) {
+      comorbidities.forEach(comorbid => {
+        if (comorbid !== 'none' && drug.comorbidContra.includes(comorbid)) {
+          drugWarnings.push(`⚠️ PERHATIAN: Pasien memiliki ${comorbidNames[comorbid]} - gunakan dengan hati-hati atau hindari`);
+        }
+      });
+    }
+    if (medications && medications.length > 0) {
+      medications.forEach(med => {
+        if (med !== 'none' && drug.medContra.includes(med)) {
+          drugWarnings.push(`⚠️ INTERAKSI OBAT: Pasien mengonsumsi ${medicationNames[med]} - risiko interaksi obat`);
+        }
+      });
+    }
+    if (drugWarnings.length > 0) {
+      warnings.push({ drugName: drug.name, warnings: drugWarnings });
+    }
+  });
+  return warnings;
+}
+
+function calculateEffectiveness(drug, duration) {
+  if (!duration) return "Durasi prosedur tidak diinput";
+  const durationNum = parseFloat(duration);
+  let drugDuration = 0;
+  const timeStr = drug.time.toLowerCase();
+  if (timeStr.includes('durasi')) {
+    const durationMatch = timeStr.match(/durasi\s+(\d+)-?(\d*)\s*(detik|menit|jam)/);
+    if (durationMatch) {
+      const val1 = parseInt(durationMatch[1]);
+      const val2 = durationMatch[2] ? parseInt(durationMatch[2]) : val1;
+      const unit = durationMatch[3];
+      if (unit === 'detik') drugDuration = (val1 + val2) / 2 / 60;
+      else if (unit === 'jam') drugDuration = (val1 + val2) / 2 * 60;
+      else drugDuration = (val1 + val2) / 2;
+    }
+  }
+  if (drugDuration === 0) return "Evaluasi individual diperlukan";
+  const ratio = durationNum / drugDuration;
+  if (ratio <= 0.5) return `✅ SANGAT EFEKTIF - Durasi obat (${drugDuration.toFixed(0)} menit) jauh lebih lama dari prosedur`;
+  else if (ratio <= 1) return `✅ EFEKTIF - Durasi obat (${drugDuration.toFixed(0)} menit) sesuai untuk prosedur`;
+  else if (ratio <= 1.5) return `⚠️ PERLU MONITORING - Durasi obat (${drugDuration.toFixed(0)} menit) lebih pendek, mungkin perlu dosis tambahan`;
+  else return `❌ KURANG EFEKTIF - Durasi obat (${drugDuration.toFixed(0)} menit) terlalu pendek, pertimbangkan obat lain atau dosis berulang`;
+}
+
+document.getElementById('calculateBtn').addEventListener('click', function() {
+  // Hard-stop blocking: Prevent submission if button is disabled due to guardrail
+  if (this.disabled) {
+    alert('❌ DOSIS MELEBIHI BATAS MAKSIMAL!\n\nTombol "Hitung Dosis" telah dinonaktifkan karena dosis yang Anda pilih melampaui batas aman untuk pasien ini.\n\nSilahkan:\n1. Kurangi volume yang diambil, ATAU\n2. Ubah konsentrasi obat, ATAU\n3. Hubungi dokter anestesi untuk konfirmasi dosis');
+    return;
+  }
+  
+  const age = document.getElementById('age').value;
+  const weight = parseFloat(document.getElementById('weight').value);
+  const height = parseFloat(document.getElementById('height').value);
+  const gender = document.getElementById('gender').value;
+  const asa = document.getElementById('asa').value;
+  const procedure = document.getElementById('procedure').value;
+  const duration = document.getElementById('duration').value;
+  function getProcedureNotes(proc) {
+    const map = {
+      general: {
+        pre: ['Verifikasi identitas pasien dan informed consent', 'Cek puasa sesuai standar (makanan padat 6-8 jam, cairan jernih 2 jam)', 'Evaluasi jalan napas (Mallampati, mobilitas leher, buka mulut)', 'Pastikan akses IV yang adekuat dan persediaan darah bila diperlukan', 'Cek kelengkapan alat resusitasi dan obat emergency'],
+        intra: ['Monitoring ketat tanda vital sesuai standar ASA', 'Dokumentasi waktu pemberian obat dan respons pasien', 'Siapkan obat antagonis (Naloxone, Flumazenil, Sugammadex jika perlu)', 'Pastikan ventilasi dan oksigenasi adekuat', 'Catat intake-output cairan'],
+        post: ['Evaluasi Aldrete Score sebelum transfer dari recovery room', 'Monitor PONV dan manajemen nyeri post-operatif', 'Observasi komplikasi: hipotensi, hipoksia, kejang, alergi', 'Edukasi pasien dan keluarga tentang perawatan lanjutan'],
+        danger: ['SpO2 < 90% atau penurunan mendadak', 'TD sistolik < 90 mmHg atau penurunan > 30% dari baseline', 'Bradikardia < 50x/menit atau takikardia > 120x/menit', 'Kesadaran menurun atau tidak respons', 'Tanda reaksi alergi/anafilaksis', 'Rigiditas otot atau hipertermia (> 38.5°C)'],
+        monitoring: ['TD, HR, RR, SpO2 setiap 5 menit', 'EKG kontinyu', 'Capnography untuk ventilasi mekanik', 'Relaksasi otot (TOF jika gunakan muscle relaxant)', 'Kedalaman anestesi (BIS monitoring jika tersedia)', 'Output urin setiap jam'],
+        complications: ['Aspirasi paru', 'Laringospasme', 'Bronkospasme', 'Malignant hyperthermia', 'Cardiovascular instability', 'Hipotensi/hipertensi'],
+        recommended: ['Propofol atau Thiopental (induksi)', 'Sevofluran atau Isofluran (pemeliharaan)', 'Fentanil (analgesik)', 'Succinylcholine atau Rocuronium (relaksasi)']
+      },
+      sedation: {
+        pre: ['Konfirmasi tujuan sedasi dan informed consent', 'Puasa minimal sesuai risiko aspirasi; pertimbangkan status ASA', 'Evaluasi jalan napas dan kesiapan ventilasi', 'Sediakan akses IV bila diperlukan'],
+        intra: ['Monitoring tanda vital dan tingkat sedasi (skala sedasi)', 'Pertimbangkan capnography untuk sedasi dalam/propofol infusion', 'Siapkan peralatan resusitasi dan antagonis benzodiazepin/opioid', 'Catat respons pasien terhadap rangsangan/obat'],
+        post: ['Amati hingga pasien kembali ke baseline kesadaran dan fungsi respirasi', 'Kriteria pulang yang sesuai (observasi PONV, stabilitas vital)', 'Edukasi tentang aktivitas setelah sedasi'],
+        danger: ['Depresi pernapasan atau SpO2 menurun', 'Penurunan kesadaran yang progresif', 'Reaksi alergi berat atau hemodinamik tidak stabil'],
+        monitoring: ['Pulse oximetry kontinyu', 'Tekanan darah & HR setiap 5 menit', 'Capnography (untuk deep sedation)', 'Skala sedasi (Ramsey/RASS)', 'Respons terhadap rangsangan'],
+        complications: ['Airway obstruction', 'Depresi respirasi', 'Aspirasi', 'Hipoksia', 'Over-sedation'],
+        recommended: ['Propofol (target: Ramsay 3-4)', 'Midazolam (untuk sedasi ringan)', 'Fentanil (jika diperlukan analgesia)']
+      },
+      regional: {
+        pre: ['Inform consent khusus untuk blok regional/spinal/epidural', 'Periksa koagulasi dan obat antikoagulan sesuai pedoman', 'Tandai lokasi tindakan dan bersihkan area', 'Pastikan IV akses dan persediaan vasopressor jika diperlukan'],
+        intra: ['Monitoring tanda vital dan level block sensorik/motorik', 'Siapkan manajemen hipotensi (fluida, vasopressor)', 'Perhatikan tanda-tanda high spinal/efek sistemik anestesi lokal (LAST)'],
+        post: ['Monitor sensasi dan motorik hingga pulih', 'Pantau retensi urin dan tanda komplikasi neurologis', 'Instruksikan pasien tentang mobilisasi sesuai tingkat block'],
+        danger: ['Tanda high spinal: kesulitan bernapas, hipotensi berat', 'Tanda toksisitas sistemik anestesi lokal (tremor, kejang, aritmia)', 'Gejala neurologis baru setelah blok'],
+        monitoring: ['TD & HR setiap 10 menit sampai stabil', 'Level blok sensorik (setiap 5 menit)', 'Fungsi motorik', 'Output urin', 'Tanda-tanda LAST (tremor, tinnitus, aritmia)', 'Tingkat kesadaran'],
+        complications: ['High spinal/total spinal', 'Toksisitas anestesi lokal (LAST)', 'Hipotensi', 'Retensi urin', 'Post-dural puncture headache (PDPH)', 'Nerve injury'],
+        recommended: ['Bupivacain (untuk spinal)', 'Epidural: Lidocain + Epinephrine', 'Jika perlu sedasi: Propofol atau Midazolam']
+      },
+      icu: {
+        pre: ['Tentukan target sedasi dan rencana ventilasi', 'Review obat yang sedang digunakan dan interaksinya', 'Pastikan monitoring lanjutan dan rencana weaning'],
+        intra: ['Kontinyu monitoring hemodinamik dan ventilasi', 'Gunakan skala sedasi (RASS/Ramsay) dan evaluasi analgesia', 'Siapkan strategi untuk delirium dan penurunan fungsi organ'],
+        post: ['Rencanakan weaning dan evaluasi readiness untuk extubation', 'Monitor komplikasi jangka pendek: hipotensi, aritmia, infeksi', 'Pastikan dokumentasi jelas tentang target terapi'],
+        danger: ['Perubahan hemodinamik mendadak', 'Tanda-tanda over-sedation atau under-ventilation', 'Reaksi obat yang mengancam jiwa'],
+        monitoring: ['Continuous cardiac monitoring & vital signs', 'RASS score setiap jam', 'Pain assessment (VAS/NRS)', 'Ventilator check setiap jam', 'Output urin & balance cairan', 'Glasgow Coma Scale', 'Arterial line untuk monitoring tekanan'],
+        complications: ['Ventilator-associated pneumonia (VAP)', 'Delirium ICU', 'Myopathy/neuropathy dari sedasi kronis', 'Self-extubation', 'Pressure ulcers', 'DVT/PE'],
+        recommended: ['Propofol infusion (0.5-3 mg/kg/jam)', 'Midazolam (titrasi sesuai RASS)', 'Fentanil atau Morphine (analgesia)', 'Dexmedetomidine (alternatif, terutama untuk weaning)']
+      },
+      local: {
+        pre: ['Inform consent dan pastikan tidak ada alergi terhadap anestesi lokal', 'Hitung dosis maksimum anestesi lokal sesuai berat badan', 'Tandai area dan pastikan kondisi kulit bersih'],
+        intra: ['Berikan injeksi bertahap dengan aspirasi antara bolus', 'Siapkan lipid emulsion dan manajemen LAST jika terjadi', 'Monitor tanda vital dan tanda-tanda toksisitas sistemik'],
+        post: ['Monitor tanda-tanda toksisitas dan pemulihan sensasi', 'Edukasi pasien mengenai tanda komplikasi dan kontak darurat'],
+        danger: ['Tanda-tanda LAST: tinnitus, perubahan mental, kejang, aritmia', 'Tanda alergi berat atau gangguan hemodinamik'],
+        monitoring: ['Tanda vital setiap 5-10 menit', 'Status kesadaran & mental status', 'Tanda-tanda neurologis (tremor, konvulsi)', 'Cardiac rhythm', 'Penyebaran anestesi lokal'],
+        complications: ['Toksisitas anestesi lokal (LAST)', 'Reaksi alergi', 'Perdarahan', 'Infeksi lokal', 'Nerve injury'],
+        recommended: ['Lidocain 1-2% ± Epinephrine (untuk infil)', 'Bupivacain 0.25-0.5% (untuk blok)', 'Max dose: Lidocain 4.5 mg/kg, Bupivacain 2.25 mg/kg']
+      }
+    };
+    return map[proc] || map.general;
+  }
+  const allergySelect = document.getElementById('allergy');
+  const allergies = Array.from(allergySelect.selectedOptions).map(opt => opt.value);
+  const comorbidSelect = document.getElementById('comorbid');
+  const comorbidities = Array.from(comorbidSelect.selectedOptions).map(opt => opt.value);
+  const medSelect = document.getElementById('medications');
+  const medications = Array.from(medSelect.selectedOptions).map(opt => opt.value);
+  if (!age || !weight || !height || !gender || !asa || !procedure || selectedDrugs.length === 0) {
+    alert('Lengkapi data pasien dan pilih obat!');
+    return;
+  }
+  const bsa = Math.sqrt((height * weight) / 3600).toFixed(2);
+  const resultsSection = document.getElementById('resultsSection');
+  const resultsContainer = document.getElementById('resultsContainer');
+  resultsSection.style.display = 'block';
+  resultsContainer.innerHTML = '';
+  let allergyText = "Tidak ada";
+  if (allergies.length > 0 && !allergies.includes('none')) allergyText = allergies.filter(a => a !== 'none').map(a => allergyNames[a] || a).join(', ');
+  let comorbidText = "Tidak ada";
+  if (comorbidities.length > 0 && !comorbidities.includes('none')) comorbidText = comorbidities.filter(c => c !== 'none').map(c => comorbidNames[c] || c).join(', ');
+  let medText = "Tidak ada";
+  if (medications.length > 0 && !medications.includes('none')) medText = medications.filter(m => m !== 'none').map(m => medicationNames[m] || m).join(', ');
+  
+  resultsContainer.innerHTML += `
+    <div class="patient-summary-card">
+      <h3>👤 Ringkasan Pasien</h3>
+      <div class="summary-grid">
+        <div>Usia: <b>${age} tahun</b></div>
+        <div>Berat: <b>${weight} kg</b></div>
+        <div>Tinggi: <b>${height} cm</b></div>
+        <div>BSA: <b>${bsa} m²</b></div>
+        <div>Jenis Kelamin: <b>${gender === 'male' ? 'Laki-laki' : 'Perempuan'}</b></div>
+        <div>Status ASA: <b>${asa}</b></div>
+        <div>Prosedur: <b>${document.getElementById('procedure').selectedOptions[0].text}</b></div>
+        <div>Durasi: <b>${duration ? duration + ' menit' : 'Tidak diinput'}</b></div>
+        <div>Kategori Usia: <b>${getAgeCategory(age)}</b></div>
+        <div>Alergi: <b>${allergyText}</b></div>
+        <div>Penyakit Penyerta: <b>${comorbidText}</b></div>
+        <div>Obat yang Dikonsumsi: <b>${medText}</b></div>
+      </div>
+    </div>
+  `;
+  
+  const contraWarnings = getContraindicationWarnings(allergies, comorbidities, medications, selectedDrugs);
+  if (contraWarnings.length > 0) {
+    let warningHtml = '<div class="result-card" style="border-left: 6px solid #e74c3c;">';
+    warningHtml += '<div class="result-header"><h3>🚨 PERINGATAN KONTRAINDIKASI & INTERAKSI OBAT</h3></div>';
+    warningHtml += '<div class="contraindications-section">';
+    contraWarnings.forEach(item => {
+      warningHtml += `<h4 style="color: #e74c3c; margin-top: 20px;">📌 ${item.drugName}</h4><ul>`;
+      item.warnings.forEach(w => {
+        warningHtml += `<li style="color: #c0392b; font-weight: 600;">${w}</li>`;
+      });
+      warningHtml += '</ul>';
+    });
+    warningHtml += '</div></div>';
+    resultsContainer.innerHTML += warningHtml;
+  }
+  
+  selectedDrugs.forEach(id => {
+    const drug = drugs.find(d => d.id === id);
+    let totalDose = '';
+    let ageFactor = 1;
+    const ageNum = parseFloat(age);
+    if (ageNum < 5) ageFactor = 0.7;
+    else if (ageNum < 12) ageFactor = 0.85;
+    else if (ageNum < 18) ageFactor = 1;
+    else if (ageNum < 60) ageFactor = 1;
+    else ageFactor = 0.8;
+    let asaFactor = 1;
+    const asaNum = parseInt(asa);
+    if (asaNum >= 3) asaFactor = 0.75;
+    const combinedFactor = ageFactor * asaFactor;
+    if (typeof drug.dose === 'number') {
+      if (drug.unit.includes('/m2')) {
+        totalDose = (drug.dose * bsa * combinedFactor).toFixed(2) + ' ' + drug.unit.replace('/m2', '');
+      } else {
+        totalDose = (drug.dose * weight * combinedFactor).toFixed(2) + ' ' + drug.unit.replace('/kg', '');
+      }
+    } else {
+      totalDose = drug.dose + ' ' + drug.unit;
+    }
+    const effectiveness = calculateEffectiveness(drug, duration);
+    resultsContainer.innerHTML += `
+      <div class="result-card">
+        <div class="result-header">
+          <h3>${drug.name}</h3>
+          <span class="age-badge">${drug.time}</span>
+        </div>
+        <div class="dosing-section">
+          <div class="dose-card" style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9);">
+            <div class="dose-type">💊 Dosis Terhitung</div>
+            <div class="dose-value">${totalDose}</div>
+            <div class="dose-perkg">Faktor koreksi: Usia (${(ageFactor*100).toFixed(0)}%) × ASA (${(asaFactor*100).toFixed(0)}%)</div>
+          </div>
+          <div class="dose-card">
+            <div class="dose-type">📍 Indikasi</div>
+            <div class="dose-value" style="font-size: 1.2em;">${drug.indication || '-'}</div>
+          </div>
+          <div class="dose-card">
+            <div class="dose-type">🚀 Rute Pemberian</div>
+            <div class="dose-value" style="font-size: 1.2em;">${drug.route}</div>
+          </div>
+          <div class="dose-card" style="background: ${effectiveness.includes('✅') ? 'linear-gradient(135deg, #e8f5e9, #c8e6c9)' : effectiveness.includes('⚠️') ? 'linear-gradient(135deg, #fff3cd, #ffe69c)' : 'linear-gradient(135deg, #fdf2f2, #fcc)'};">
+            <div class="dose-type">⏱️ Efektivitas Durasi</div>
+            <div class="dose-value" style="font-size: 1em; line-height: 1.4;">${effectiveness}</div>
+          </div>
+        </div>
+        <div class="admin-section">
+          <h4>📋 Aturan Pakai & Administrasi</h4>
+          <ul><li>${drug.rules}</li></ul>
+        </div>
+        <div class="warnings-section">
+          <h4>⚠️ Peringatan & Perhatian</h4>
+          <ul><li>${drug.warning}</li></ul>
+        </div>
+        <div class="sideeffects-section">
+          <h4>🔸 Efek Samping</h4>
+          <ul><li>${drug.side}</li></ul>
+        </div>
+        <div class="contraindications-section">
+          <h4>🚫 Kontraindikasi</h4>
+          <ul><li>${drug.kontra}</li></ul>
+        </div>
+        <div class="monitoring-section">
+          <h4>🔍 Monitoring yang Diperlukan</h4>
+          <ul>
+            <li>Tanda vital (TD, nadi, RR, SpO2) setiap 5 menit</li>
+            <li>Kesadaran dan respons pasien</li>
+            <li>Fungsi pernapasan dan jalan napas</li>
+            <li>EKG kontinyu untuk prosedur > 30 menit</li>
+            ${drug.type === 'opioid' ? '<li>Level sedasi dan nyeri (VAS/NRS)</li>' : ''}
+            ${drug.type === 'muscle-relaxant' ? '<li>TOF (Train of Four) monitoring</li>' : ''}
+            ${drug.type === 'local' ? '<li>Tanda toksisitas sistemik anestesi lokal (LAST)</li>' : ''}
+          </ul>
+        </div>
+        <div class="drug-image" style="text-align: center; margin-top: 20px;">
+          <img src="${drug.image}" alt="${drug.name}" class="drug-thumb" data-name="${drug.name}" style="max-width:150px; max-height:150px; cursor: pointer;">
+        </div>
+      </div>
+    `;
+  });
+  
+  const notes = getProcedureNotes(procedure);
+  
+  // Customize notes based on patient input
+  let customizedNotes = JSON.parse(JSON.stringify(notes)); // Deep copy
+  const ageNum = parseFloat(age);
+  const asaNum = parseInt(asa);
+  
+  // Add ASA-specific precautions
+  if (asaNum >= 3) {
+    if (!customizedNotes.pre.includes('Konsultasi dengan dokter spesialis untuk penyakit sistemik pasien')) {
+      customizedNotes.pre.push('Konsultasi dengan dokter spesialis untuk penyakit sistemik pasien');
+    }
+    if (!customizedNotes.intra.includes('Siapkan obat vasopressor dan cardiotonic untuk manajemen hemodinamik')) {
+      customizedNotes.intra.push('Siapkan obat vasopressor dan cardiotonic untuk manajemen hemodinamik');
+    }
+  }
+  
+  // Add age-specific precautions
+  if (ageNum < 5) {
+    if (!customizedNotes.pre.includes('Pastikan akses vena yang aman untuk anak-anak (gunakan jarum kecil)')) {
+      customizedNotes.pre.push('Pastikan akses vena yang aman untuk anak-anak (gunakan jarum kecil)');
+    }
+    if (!customizedNotes.intra.includes('Monitor ketat suhu tubuh, hindari hipotermia')) {
+      customizedNotes.intra.push('Monitor ketat suhu tubuh, hindari hipotermia');
+    }
+  } else if (ageNum > 65) {
+    if (!customizedNotes.pre.includes('Evaluasi keadaan jantung dan paru (EKG, foto toraks jika diperlukan)')) {
+      customizedNotes.pre.push('Evaluasi keadaan jantung dan paru (EKG, foto toraks jika diperlukan)');
+    }
+    if (!customizedNotes.monitoring.includes('Monitor EKG dan tekanan darah lebih ketat pada lansia')) {
+      customizedNotes.monitoring.push('Monitor EKG dan tekanan darah lebih ketat pada lansia');
+    }
+  }
+  
+  // Add comorbidity-specific precautions
+  if (comorbidities.includes('hypertension')) {
+    if (!customizedNotes.danger.includes('Tekanan darah > 160/110 mmHg - risiko stroke/infark')) {
+      customizedNotes.danger.push('Tekanan darah > 160/110 mmHg - risiko stroke/infark');
+    }
+    if (!customizedNotes.intra.includes('Persiapkan antihipertensi IV (labetalol, esmolol) untuk kontrol tekanan darah')) {
+      customizedNotes.intra.push('Persiapkan antihipertensi IV (labetalol, esmolol) untuk kontrol tekanan darah');
+    }
+  }
+  
+  if (comorbidities.includes('diabetes')) {
+    if (!customizedNotes.pre.includes('Cek kadar gula darah sebelum anestesi, tanyakan dosis insulin/obat terakhir')) {
+      customizedNotes.pre.push('Cek kadar gula darah sebelum anestesi, tanyakan dosis insulin/obat terakhir');
+    }
+    if (!customizedNotes.intra.includes('Monitor kadar gula darah setiap 2 jam, siapkan dextrose 40% untuk hipoglikemia')) {
+      customizedNotes.intra.push('Monitor kadar gula darah setiap 2 jam, siapkan dextrose 40% untuk hipoglikemia');
+    }
+  }
+  
+  if (comorbidities.includes('asthma')) {
+    if (!customizedNotes.pre.includes('Tanyakan riwayat asma, trigger, dan obat asma terakhir dikonsumsi')) {
+      customizedNotes.pre.push('Tanyakan riwayat asma, trigger, dan obat asma terakhir dikonsumsi');
+    }
+    if (!customizedNotes.complications.includes('Bronkospasme selama induksi - siapkan beta-2 agonis inhalasi')) {
+      customizedNotes.complications.push('Bronkospasme selama induksi - siapkan beta-2 agonis inhalasi');
+    }
+  }
+  
+  if (comorbidities.includes('heart')) {
+    if (!customizedNotes.pre.includes('Evaluasi fungsi jantung (EKG, ekokardiografi), tanyakan obat jantung')) {
+      customizedNotes.pre.push('Evaluasi fungsi jantung (EKG, ekokardiografi), tanyakan obat jantung');
+    }
+    if (!customizedNotes.monitoring.includes('Monitor EKG kontinyu dan capnography untuk deteksi aritmia')) {
+      customizedNotes.monitoring.push('Monitor EKG kontinyu dan capnography untuk deteksi aritmia');
+    }
+  }
+  
+  if (comorbidities.includes('kidney')) {
+    if (!customizedNotes.pre.includes('Cek fungsi ginjal (kreatinin, BUN), status hidrasi pasien')) {
+      customizedNotes.pre.push('Cek fungsi ginjal (kreatinin, BUN), status hidrasi pasien');
+    }
+    if (!customizedNotes.intra.includes('Pertahankan keseimbangan cairan yang baik, hindari nefrotoksik')) {
+      customizedNotes.intra.push('Pertahankan keseimbangan cairan yang baik, hindari nefrotoksik');
+    }
+  }
+  
+  if (comorbidities.includes('liver')) {
+    if (!customizedNotes.pre.includes('Cek fungsi hati (SGOT, SGPT, albumin), tanyakan riwayat sirosis')) {
+      customizedNotes.pre.push('Cek fungsi hati (SGOT, SGPT, albumin), tanyakan riwayat sirosis');
+    }
+    if (!customizedNotes.intra.includes('Gunakan obat yang aman pada gangguan hati (hindari propofol pada sirosis berat)')) {
+      customizedNotes.intra.push('Gunakan obat yang aman pada gangguan hati (hindari propofol pada sirosis berat)');
+    }
+  }
+  
+  if (comorbidities.includes('malignant-hyperthermia')) {
+    if (!customizedNotes.pre.includes('ALERT: Riwayat hipertermia maligna - gunakan anestesi non-triggering')) {
+      customizedNotes.pre.push('ALERT: Riwayat hipertermia maligna - gunakan anestesi non-triggering');
+    }
+    if (!customizedNotes.danger.includes('Suhu > 38.5°C atau rigiditas otot - STOP dan siapkan dantrolene IV')) {
+      customizedNotes.danger.push('Suhu > 38.5°C atau rigiditas otot - STOP dan siapkan dantrolene IV');
+    }
+  }
+  
+  // Add allergy-specific precautions
+  if (allergies.length > 0 && !allergies.includes('none')) {
+    const allergyList = allergies.filter(a => a !== 'none').map(a => allergyNames[a] || a).join(', ');
+    if (!customizedNotes.pre.includes('ALERT ALERGI: ' + allergyList + ' - Hindari kontak dengan alergen')) {
+      customizedNotes.pre.push('ALERT ALERGI: ' + allergyList + ' - Hindari kontak dengan alergen');
+    }
+  }
+  
+  // Add medication interaction precautions
+  if (medications.includes('anticoagulant') || medications.includes('nsaid')) {
+    if (!customizedNotes.pre.includes('Tanyakan dosis dan waktu penggunaan antikoagulan terakhir - risiko perdarahan')) {
+      customizedNotes.pre.push('Tanyakan dosis dan waktu penggunaan antikoagulan terakhir - risiko perdarahan');
+    }
+  }
+  
+  if (medications.includes('maoi')) {
+    if (!customizedNotes.warning && !customizedNotes.pre.includes('Pasien menggunakan MAOI - hindari opioid tertentu, risiko hipertensi krisis')) {
+      customizedNotes.pre.push('Pasien menggunakan MAOI - hindari opioid tertentu, risiko hipertensi krisis');
+    }
+  }
+  
+  // Add duration-specific precautions
+  if (duration && parseFloat(duration) > 240) {
+    if (!customizedNotes.monitoring.includes('Prosedur panjang (>4 jam) - monitor ketat untuk hipotermia, tekanan saraf, dan posisi tubuh')) {
+      customizedNotes.monitoring.push('Prosedur panjang (>4 jam) - monitor ketat untuk hipotermia, tekanan saraf, dan posisi tubuh');
+    }
+  }
+  
+  resultsContainer.innerHTML += `
+    <div class="result-card" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-left: 6px solid #3498db;">
+      <div class="result-header">
+        <h3>📝 Catatan Penting Asuhan Keperawatan Anestesi</h3>
+        <div style="display: flex; gap: 10px;">
+          <button class="select-btn" style="padding: 10px 20px; font-size: 0.9em; width: auto;" onclick="window.print()">🖨️ Print</button>
+          <button class="select-btn" style="padding: 10px 20px; font-size: 0.9em; width: auto;" onclick="exportToPDF()">📥 Export PDF</button>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h4>Tahap Pre-Operatif</h4>
+        <ul>
+          ${customizedNotes.pre.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="warnings-section">
+        <h4>Tahap Intra-Operatif</h4>
+        <ul>
+          ${customizedNotes.intra.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="monitoring-section">
+        <h4>Tahap Post-Operatif (Recovery)</h4>
+        <ul>
+          ${customizedNotes.post.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="monitoring-section" style="background: #e3f2fd; border-left: 4px solid #2196f3;">
+        <h4>🔍 Monitoring Detail yang Diperlukan</h4>
+        <ul>
+          ${customizedNotes.monitoring.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="sideeffects-section" style="background: #fff3e0; border-left: 4px solid #ff9800;">
+        <h4>⚠️ Komplikasi Khusus yang Perlu Diwaspadai</h4>
+        <ul>
+          ${customizedNotes.complications.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="admin-section" style="background: #f3e5f5; border-left: 4px solid #9c27b0;">
+        <h4>💊 Rekomendasi Obat untuk Prosedur Ini</h4>
+        <ul>
+          ${customizedNotes.recommended.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="contraindications-section">
+        <h4>⚠️ Tanda Bahaya yang Harus Dilaporkan Segera</h4>
+        <ul>
+          ${customizedNotes.danger.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+  `;
+  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+function renderDrugCards(category = 'all', search = '') {
+  const grid = document.getElementById('drugGrid');
+  grid.innerHTML = '';
+  let drugsFiltered = drugs;
+  if (category && category !== 'all') {
+    drugsFiltered = drugs.filter(d => {
+      if (category === 'iv-induction') return d.type === 'iv-induction';
+      if (category === 'inhalation') return d.type === 'inhalation';
+      if (category === 'opioid') return d.type === 'opioid';
+      if (category === 'muscle-relaxant') return d.type === 'muscle-relaxant';
+      if (category === 'local') return d.type === 'local';
+      if (category === 'sedasi') return d.type === 'sedasi';
+      return false;
+    });
+  }
+  if (search) {
+    drugsFiltered = drugsFiltered.filter(d => d.name.toLowerCase().includes(search.toLowerCase()));
+  }
+  drugsFiltered.forEach(drug => {
+    const card = document.createElement('div');
+    card.className = 'drug-card';
+    const thumbSrc = drug.image ? drug.image : 'images/placeholder_1.svg';
+    card.innerHTML = `
+      <div class="drug-card-header">
+        <img src="${thumbSrc}" data-name="${drug.name.replace(/"/g,'')}" alt="${drug.name}" class="drug-thumb" />
+        <div class="drug-card-meta">
+          <h3>${drug.name}</h3>
+          <div class="drug-routes">Rute: ${drug.route}</div>
+          <div class="drug-onset">${drug.time}</div>
+        </div>
+      </div>
+      <button class="select-btn" data-id="${drug.id}">Pilih</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderDrugCards(btn.dataset.category, document.getElementById('drugSearch').value);
+  });
+});
+
+document.getElementById('drugSearch').addEventListener('input', function(e) {
+  const category = document.querySelector('.tab-btn.active').dataset.category;
+  renderDrugCards(category, e.target.value);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // renderDrugCards() will be called after drugs.json loads; update selection UI
+  updateSelectedDrugs();
+});
+
+// Live calculation UI handlers
+function updateLiveCalcUI() {
+  const live = document.getElementById('liveCalc');
+  const preview = document.getElementById('livePreview');
+  const volRange = document.getElementById('volumeRange');
+  const volNumber = document.getElementById('volumeNumber');
+  const concInput = document.getElementById('concentrationInput');
+  if (!live || !preview) return;
+  if (selectedDrugs.length === 0) {
+    live.style.display = 'none';
+    preview.textContent = 'Pilih obat untuk melihat pratinjau.';
+    return;
+  }
+  live.style.display = 'block';
+  // If first selected drug has concentration info in drugs DB, prefill
+  const drug = drugs.find(d => d.id === selectedDrugs[0]);
+  if (drug && drug.concentration_mg_per_ml) {
+    concInput.value = drug.concentration_mg_per_ml + ' mg/mL';
+  } else if (drug && drug.concentration) {
+    concInput.value = drug.concentration;
+  }
+  // sync dose inputs and react to weight change
+  const dosePerKgInput = document.getElementById('dosePerKg');
+  const doseTotalInput = document.getElementById('doseTotalMg');
+  if (dosePerKgInput && doseTotalInput) {
+    dosePerKgInput.addEventListener('input', () => {
+      // update total mg from weight
+      const w = parseFloat(document.getElementById('weight').value) || 0;
+      const dpk = parseFloat(dosePerKgInput.value);
+      if (!Number.isNaN(dpk) && w > 0) {
+        doseTotalInput.value = (dpk * w).toFixed(1);
+      }
+      computeLivePreview();
+    });
+    doseTotalInput.addEventListener('input', () => {
+      const w = parseFloat(document.getElementById('weight').value) || 0;
+      const total = parseFloat(doseTotalInput.value);
+      if (!Number.isNaN(total) && w > 0) {
+        dosePerKgInput.value = (total / w).toFixed(2);
+      }
+      computeLivePreview();
+    });
+  }
+  // Also compute preview when weight changes (affects dose per kg calculation)
+  const weightEl = document.getElementById('weight');
+  if (weightEl) weightEl.addEventListener('input', computeLivePreview);
+  computeLivePreview();
+}
+
+function parseConcentrationInput(val) {
+  if (!val) return null;
+  val = String(val).trim();
+  if (val.endsWith('%')) return DoseCalc.percentToMgPerMl(val);
+  // assume numeric mg/mL
+  const n = parseFloat(val);
+  if (!Number.isNaN(n)) return n;
+  return null;
+}
+
+function computeLivePreview() {
+  const weight = parseFloat(document.getElementById('weight').value) || 0;
+  const vol = parseFloat(document.getElementById('volumeNumber').value) || 0;
+  const concRaw = document.getElementById('concentrationInput').value;
+  const concMgPerMl = parseConcentrationInput(concRaw);
+  const preview = document.getElementById('livePreview');
+  const calculateBtn = document.getElementById('calculateBtn');
+  const guardrailWarning = document.getElementById('guardrailWarning');
+  const guardrailMessage = document.getElementById('guardrailMessage');
+  
+  if (!concMgPerMl) {
+    preview.textContent = 'Masukkan konsentrasi yang valid (mis. 1% atau 10).';
+    calculateBtn.disabled = true;
+    guardrailWarning.style.display = 'none';
+    updateCalculateReason();
+    return;
+  }
+  
+  const mg = DoseCalc.calculateMgFromVolume(vol, concMgPerMl);
+  const drug = drugs.find(d => d.id === selectedDrugs[0]);
+  let maxByWeight = null;
+  if (drug && weight && drug.max_mg_per_kg) maxByWeight = DoseCalc.calculateMaxDoseMg(weight, drug.max_mg_per_kg);
+  let pct = maxByWeight ? ((mg / maxByWeight) * 100).toFixed(1) : 'N/A';
+  preview.textContent = `Volume ${vol} mL @ ${concMgPerMl} mg/mL = ${mg} mg` + (maxByWeight ? ` — ${pct}% dari batas ${maxByWeight} mg` : '');
+  
+  // Hard-stop guardrails (3 levels)
+  if (maxByWeight && mg > maxByWeight) {
+    // LEVEL 3: HARD-STOP (MERAH) - Melebihi batas, tombol nonaktif
+    calculateBtn.disabled = true;
+    calculateBtn.style.opacity = '0.5';
+    calculateBtn.style.cursor = 'not-allowed';
+    guardrailWarning.style.display = 'block';
+    guardrailWarning.style.borderLeftColor = '#c0392b';
+    guardrailWarning.style.background = '#fdf2f2';
+    guardrailMessage.textContent = `❌ DOSIS MELEBIHI BATAS MAKSIMAL! ${mg} mg > ${maxByWeight} mg (${pct}%). HUBUNGI DOKTER ANESTESI.`;
+    preview.style.color = '#c0392b';
+  } else if (maxByWeight && mg > 0.9 * maxByWeight) {
+    // LEVEL 2: WARNING (KUNING) - Mendekati batas, tombol masih aktif
+    calculateBtn.disabled = false;
+    calculateBtn.style.opacity = '1';
+    calculateBtn.style.cursor = 'pointer';
+    guardrailWarning.style.display = 'block';
+    guardrailWarning.style.borderLeftColor = '#f39c12';
+    guardrailWarning.style.background = '#fffbf0';
+    guardrailWarning.style.color = '#d68910';
+    guardrailMessage.textContent = `⚠️ PERINGATAN: Dosis mencapai ${pct}% dari batas maksimal. Pastikan dosis sudah dikonfirmasi dokter.`;
+    preview.style.color = '#f39c12';
+  } else {
+    // LEVEL 1: SAFE (HIJAU) - Dosis aman
+    calculateBtn.disabled = false;
+    calculateBtn.style.opacity = '1';
+    calculateBtn.style.cursor = 'pointer';
+    guardrailWarning.style.display = 'none';
+    preview.style.color = '#27ae60';
+  }
+
+  // Update reason box for disabled calculate button (if any)
+  updateCalculateReason();
+
+}
+
+function updateCalculateReason() {
+  const reasonDiv = document.getElementById('calculateBtnReason');
+  if (!reasonDiv) return;
+  const calculateBtn = document.getElementById('calculateBtn');
+  // hide when enabled
+  if (!calculateBtn.disabled) {
+    reasonDiv.style.display = 'none';
+    reasonDiv.textContent = '';
+    return;
+  }
+
+  // determine reasons
+  if (selectedDrugs.length === 0) {
+    reasonDiv.textContent = 'Pilih minimal satu obat sebelum menghitung dosis.';
+    reasonDiv.style.display = 'block';
+    return;
+  }
+  const weight = parseFloat(document.getElementById('weight').value) || 0;
+  if (!weight || weight <= 0) {
+    reasonDiv.textContent = 'Isi berat badan pasien (kg) terlebih dahulu.';
+    reasonDiv.style.display = 'block';
+    return;
+  }
+  const concRaw = document.getElementById('concentrationInput').value;
+  const conc = parseConcentrationInput(concRaw);
+  if (!conc) {
+    reasonDiv.textContent = 'Konsentrasi tidak valid. Gunakan format "1%" atau "10" (mg/mL), kemudian klik Terapkan.';
+    reasonDiv.style.display = 'block';
+    return;
+  }
+  const vol = parseFloat(document.getElementById('volumeNumber').value) || 0;
+  const mg = DoseCalc.calculateMgFromVolume(vol, conc);
+  const drug = drugs.find(d => d.id === selectedDrugs[0]);
+  if (!drug || !drug.max_mg_per_kg) {
+    reasonDiv.textContent = 'Informasi dosis maksimum untuk obat ini tidak tersedia.';
+    reasonDiv.style.display = 'block';
+    return;
+  }
+  const maxByWeight = DoseCalc.calculateMaxDoseMg(weight, drug.max_mg_per_kg);
+  if (mg > maxByWeight) {
+    reasonDiv.textContent = `DOSIS MELEBIHI BATAS: ${mg} mg > ${maxByWeight} mg untuk ${drug.name}. Kurangi volume atau ubah konsentrasi.`;
+    reasonDiv.style.display = 'block';
+    return;
+  }
+  // default fallback
+  reasonDiv.textContent = 'Tombol dinonaktifkan — periksa input pasien, obat, volume, dan konsentrasi.';
+  reasonDiv.style.display = 'block';
+}
+function getAgeCategory(age) {
+  age = parseFloat(age);
+  if (age < 5) return 'Balita';
+  if (age < 12) return 'Anak-anak';
+  if (age < 18) return 'Remaja';
+  if (age < 60) return 'Dewasa';
+  return 'Lansia';
+}
+
+// ============ VITAL SIGNS & PHYSIOLOGICAL PARAMETERS ============
+
+function validateVitalSigns() {
+  const sysBP = parseFloat(document.getElementById('sysBP').value) || 0;
+  const diaBP = parseFloat(document.getElementById('diaBP').value) || 0;
+  const heartRate = parseFloat(document.getElementById('heartRate').value) || 0;
+  const respRate = parseFloat(document.getElementById('respirationRate').value) || 0;
+  const bodyTemp = parseFloat(document.getElementById('bodyTemp').value) || 0;
+  const spo2 = parseFloat(document.getElementById('spo2').value) || 0;
+  
+  const warnings = [];
+  
+  // Blood Pressure Check
+  if (sysBP > 0 && sysBP > 180) warnings.push('⚠️ Tekanan Darah Sistolik tinggi (>180)');
+  if (diaBP > 0 && diaBP > 120) warnings.push('⚠️ Tekanan Darah Diastolik tinggi (>120)');
+  if (sysBP > 0 && diaBP > 0 && sysBP < diaBP) warnings.push('⚠️ Tekanan Darah Sistolik < Diastolik (nilai tidak normal)');
+  
+  // Heart Rate Check
+  if (heartRate > 0 && heartRate < 40) warnings.push('⚠️ Nadi terlalu rendah (<40): Kemungkinan Bradikardi');
+  if (heartRate > 0 && heartRate > 120) warnings.push('⚠️ Nadi terlalu tinggi (>120): Kemungkinan Takikardi');
+  
+  // Respiration Rate Check
+  if (respRate > 0 && respRate < 12) warnings.push('⚠️ Laju Pernapasan rendah: Risiko Depresi Napas');
+  if (respRate > 0 && respRate > 30) warnings.push('⚠️ Laju Pernapasan tinggi (>30)');
+  
+  // Body Temperature Check
+  if (bodyTemp > 0 && bodyTemp < 36) warnings.push('⚠️ Suhu Tubuh rendah: Hipotermia');
+  if (bodyTemp > 0 && bodyTemp > 39) warnings.push('⚠️ Suhu Tubuh tinggi: Demam/Hipertermia');
+  
+  // SpO2 Check
+  if (spo2 > 0 && spo2 < 90) warnings.push('❌ SpO₂ kritis (<90%): Risiko Hipoksemia, Pastikan Airway Aman');
+  if (spo2 > 0 && spo2 < 95) warnings.push('⚠️ SpO₂ rendah (<95%)');
+  
+  return { isValid: warnings.length === 0, warnings };
+}
+
+function checkBloodType() {
+  const bloodType = document.getElementById('bloodType').value;
+  if (bloodType) {
+    console.log(`✅ Golongan darah pasien: ${bloodType}`);
+  }
+}
+
+function displayVitalSignsStatus() {
+  const result = validateVitalSigns();
+  const statusDiv = document.getElementById('vitalSignsStatus');
+  
+  if (!statusDiv) {
+    // Create status div if doesn't exist
+    const newDiv = document.createElement('div');
+    newDiv.id = 'vitalSignsStatus';
+    newDiv.style.marginTop = '15px';
+    document.getElementById('patientForm').appendChild(newDiv);
+  }
+  
+  const statusDiv2 = document.getElementById('vitalSignsStatus');
+  if (result.warnings.length > 0) {
+    statusDiv2.innerHTML = '<div style="padding:10px; border-radius:4px; background:#fff3cd; border-left:4px solid #ffc107; color:#856404;">' +
+      '<strong>⚠️ PERHATIAN TANDA VITAL:</strong><ul style="margin:8px 0 0 0; padding-left:20px;">' +
+      result.warnings.map(w => `<li>${w}</li>`).join('') +
+      '</ul></div>';
+  } else {
+    statusDiv2.innerHTML = '<div style="padding:10px; border-radius:4px; background:#d4edda; border-left:4px solid #28a745; color:#155724; font-weight:bold;">✅ Semua Tanda Vital Normal</div>';
+  }
+}
+
+// ============ END VITAL SIGNS ============
+
+document.addEventListener('click', function (e) {
+  if (e.target.classList && e.target.classList.contains('drug-thumb')) {
+    const src = e.target.getAttribute('src');
+    const name = e.target.dataset.name || '';
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('imageModalImg');
+    const modalCaption = document.getElementById('imageModalCaption');
+    modalImg.src = src;
+    modalCaption.textContent = name;
+    modal.style.display = 'flex';
+  }
+});
+
+document.getElementById('imageModal')?.addEventListener('click', function(e) {
+  const modal = document.getElementById('imageModal');
+  if (!e.target.closest('.image-modal-content') || e.target.id === 'imageModalClose') {
+    modal.style.display = 'none';
+    document.getElementById('imageModalImg').src = '';
+  }
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('imageModal');
+    if (modal && modal.style.display === 'flex') {
+      modal.style.display = 'none';
+      document.getElementById('imageModalImg').src = '';
+    }
+  }
+});
+
+function exportToPDF() {
+  const resultsContainer = document.getElementById('resultsContainer');
+  if (!resultsContainer || resultsContainer.innerHTML.trim() === '') {
+    alert('Silakan hitung dosis terlebih dahulu');
+    return;
+  }
+  
+  // Extract text content dengan formatting yang rapi dan tanpa simbol
+  let textContent = '';
+  textContent += 'LAPORAN PERHITUNGAN DOSIS OBAT ANESTESI\n';
+  textContent += 'Kalkulator Dosis Anestesi - Anestesiologi Kelas A\n';
+  textContent += 'Tanggal: ' + new Date().toLocaleString('id-ID') + '\n\n';
+  
+  // Extract patient summary
+  const summaryCard = resultsContainer.querySelector('.patient-summary-card');
+  if (summaryCard) {
+    textContent += 'RINGKASAN PASIEN\n';
+    const summaryDivs = summaryCard.querySelectorAll('.summary-grid div');
+    summaryDivs.forEach(div => {
+      const text = div.textContent.trim();
+      if (text) {
+        textContent += '• ' + text + '\n';
+      }
+    });
+    textContent += '\n';
+  }
+  
+  // Extract warning if exists
+  const warningCard = resultsContainer.querySelector('.result-card[style*="e74c3c"]');
+  if (warningCard && warningCard.textContent.includes('PERINGATAN')) {
+    textContent += 'PERINGATAN KONTRAINDIKASI DAN INTERAKSI OBAT\n';
+    const warnings = warningCard.querySelectorAll('h4, li');
+    warnings.forEach(el => {
+        let text = el.textContent.trim();
+        // Remove all emoji and special symbols
+        text = text.replace(/[^\w\s\(\)\-\,\.\/:]/g, '').trim();
+      if (text && text.length > 0) {
+        if (el.tagName === 'H4') {
+          textContent += '\n' + text + '\n';
+        } else {
+          textContent += '• ' + text + '\n';
+        }
+      }
+    });
+    textContent += '\n';
+  }
+  
+  // Extract drug information
+  const drugCards = resultsContainer.querySelectorAll('.result-card:not([style*="f8f9fa"])');
+  let drugCount = 1;
+  drugCards.forEach((card, index) => {
+    const header = card.querySelector('.result-header h3');
+    if (header && !header.textContent.includes('Catatan')) {
+      const title = header.textContent.trim().replace(/[^\w\s\(\)]/g, '');
+      textContent += '\nOBAT ' + drugCount + ': ' + title + '\n';
+      
+      // Get time info
+      const timeBadge = card.querySelector('.age-badge');
+      if (timeBadge) {
+        textContent += 'Waktu Onset dan Durasi: ' + timeBadge.textContent.trim().replace(/[^\w\s\-\:\,\.]/g, '') + '\n';
+      }
+      
+      // Get dosing info
+      const doseCards = card.querySelectorAll('.dose-card');
+      textContent += '\nPerhitungan Dosis:\n';
+      doseCards.forEach(dCard => {
+        const type = dCard.querySelector('.dose-type');
+        const value = dCard.querySelector('.dose-value');
+        if (type && value) {
+          let typeText = type.textContent.trim().replace(/[^\w\s\(\)]/g, '');
+          let valueText = value.textContent.trim();
+          textContent += '• ' + typeText + ': ' + valueText;
+          const perkg = dCard.querySelector('.dose-perkg');
+          if (perkg) {
+            textContent += ' (' + perkg.textContent.trim().replace(/[^\w\s\(\)\-\%]/g, '') + ')';
+          }
+          textContent += '\n';
+        }
+      });
+      
+      // Get sections
+      const sections = card.querySelectorAll('.admin-section, .warnings-section, .monitoring-section, .sideeffects-section, .contraindications-section');
+      sections.forEach(section => {
+        const h4 = section.querySelector('h4');
+        if (h4) {
+            const sectionTitle = h4.textContent.trim().replace(/[^\w\s\(\)]/g, '').trim();
+            if (sectionTitle.length > 0) {
+              textContent += '\n' + sectionTitle + '\n';
+          const lis = section.querySelectorAll('li');
+          lis.forEach(li => {
+              let liText = li.textContent.trim();
+              // Remove all emoji and special symbols
+              liText = liText.replace(/[^\w\s\(\)\-\,\.\/:]/g, '').trim();
+              if (liText.length > 0) {
+            textContent += '• ' + liText + '\n';
+              }
+          });
+            }
+        }
+      });
+      
+      textContent += '\n';
+      drugCount++;
+    }
+  });
+  
+  // Extract catatan penting
+  const notes = resultsContainer.querySelector('[style*="gradient(135deg, #f8f9fa"]');
+  if (notes) {
+    textContent += 'CATATAN PENTING ASUHAN KEPERAWATAN ANESTESI\n';
+    const sections = notes.querySelectorAll('.admin-section, .warnings-section, .monitoring-section, .sideeffects-section, .contraindications-section');
+    sections.forEach(section => {
+      const h4 = section.querySelector('h4');
+      if (h4) {
+          const sectionTitle = h4.textContent.trim().replace(/[^\w\s\(\)]/g, '').trim();
+          if (sectionTitle.length > 0) {
+            textContent += '\n' + sectionTitle + '\n';
+        const lis = section.querySelectorAll('li');
+        lis.forEach(li => {
+            let liText = li.textContent.trim();
+            // Remove all emoji and special symbols
+            liText = liText.replace(/[^\w\s\(\)\-\,\.\/:]/g, '').trim();
+            if (liText.length > 0) {
+          textContent += '• ' + liText + '\n';
+            }
+        });
+          }
+      }
+    });
+  }
+  
+  textContent += '\nLaporan ini dibuat langsung oleh Kalkulator Dosis Anestesi\n';
+  textContent += 'Copyright 2025 Kelompok 9 - Anestesiologi Kelas A\n';
+  
+  // Final sanitize: remove control chars/emoji from every line but keep bullets and common punctuation
+  function sanitizeLineForPDF(line) {
+    if (!line) return '';
+    // preserve leading bullet
+    let leading = '';
+    if (line.trim().startsWith('•')) {
+      leading = '• ';
+      line = line.replace(/^\s*•\s*/, '');
+    }
+    // remove control chars
+    line = line.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
+    // allow letters, numbers, punctuation, spaces, bullets, parentheses, percent, colon, slash, dash, comma, dot
+    line = line.replace(/[^\p{L}\p{N}\p{P}\p{Z}\s:\/\-%(),.]/gu, '');
+    line = line.trim();
+    return (leading ? (leading + line) : line);
+  }
+
+  const sanitizedLines = textContent.split('\n').map(l => sanitizeLineForPDF(l));
+  textContent = sanitizedLines.join('\n');
+
+  // Generate PDF using jsPDF
+  if (typeof jsPDF === 'undefined') {
+    // Load jsPDF from CDN
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    script.onload = () => {
+      generatePDFFromText(textContent);
+    };
+    script.onerror = () => {
+      downloadTextAsFile(textContent);
+    };
+    document.head.appendChild(script);
+  } else {
+    generatePDFFromText(textContent);
+  }
+  
+  function generatePDFFromText(content) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const lines = content.split('\n');
+    
+      // Margin settings (in mm) - konsisten dan aman
+      const marginLeft = 12;
+      const marginRight = 12;
+      const marginTop = 12;
+      const marginBottom = 12;
+    
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+      const maxWidth = pageWidth - marginLeft - marginRight - 2; // Extra buffer untuk safety
+    
+    let yPosition = marginTop;
+    
+    doc.setFont('Arial', 'normal');
+    doc.setFontSize(10);
+    
+    lines.forEach((line) => {
+      if (line.trim().length === 0) {
+        yPosition += 3;
+        return;
+      }
+      
+      // Check if line is a title (uppercase, no bullet point)
+        const isTitle = line.trim().match(/^[A-Z][A-Z0-9\s:]*[A-Z0-9]$/) && !line.startsWith('•');
+      
+      if (isTitle) {
+        // Title formatting
+        if (yPosition > pageHeight - marginBottom - 15) {
+          doc.addPage();
+          yPosition = marginTop;
+        }
+        yPosition += 2;
+        doc.setFont('Arial', 'bold');
+        doc.setFontSize(11);
+          const wrappedTitle = doc.splitTextToSize(line.trim(), maxWidth);
+          wrappedTitle.forEach((titleLine) => {
+            doc.text(titleLine, marginLeft, yPosition);
+            yPosition += 5;
+          });
+        doc.setFont('Arial', 'normal');
+        doc.setFontSize(10);
+      } else {
+        // Regular text or bullet points
+        if (yPosition > pageHeight - marginBottom - 8) {
+          doc.addPage();
+          yPosition = marginTop;
+        }
+        
+          const wrappedLines = doc.splitTextToSize(line.trim(), maxWidth);
+        wrappedLines.forEach((wrappedLine) => {
+          if (yPosition > pageHeight - marginBottom) {
+            doc.addPage();
+            yPosition = marginTop;
+          }
+          doc.text(wrappedLine, marginLeft, yPosition);
+          yPosition += 5;
+        });
+      }
+    });
+    
+    doc.save('Laporan_Dosis_Anestesi_' + new Date().toISOString().slice(0, 10) + '.pdf');
+  }
+  
+  function downloadTextAsFile(content) {
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Laporan_Dosis_Anestesi_' + new Date().toISOString().slice(0, 10) + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+}
+
+// Taskbar handlers
+document.addEventListener('DOMContentLoaded', () => {
+  const tbPrint = document.getElementById('tbPrint');
+  const tbPDF = document.getElementById('tbPDF');
+  const tbTop = document.getElementById('tbTop');
+  const tbHome = document.getElementById('tbHome');
+  const tbHelp = document.getElementById('tbHelp');
+
+  const fmPrint = document.getElementById('fmPrint');
+  const fmPDF = document.getElementById('fmPDF');
+  const fmTop = document.getElementById('fmTop');
+
+  if (tbPrint) tbPrint.addEventListener('click', () => window.print());
+  if (tbPDF) tbPDF.addEventListener('click', () => exportToPDF());
+  if (tbTop) tbTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  if (tbHome) tbHome.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  if (tbHelp) tbHelp.addEventListener('click', () => alert('Menu cepat: Print / Export PDF / Top'));
+
+  if (fmPrint) fmPrint.addEventListener('click', () => window.print());
+  if (fmPDF) fmPDF.addEventListener('click', () => exportToPDF());
+  if (fmTop) fmTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+});
+
+// ============ VITAL SIGNS EVENT LISTENERS ============
+// Auto-validate vital signs when any value changes
+const vitalSignsInputIds = ['sysBP', 'diaBP', 'heartRate', 'respirationRate', 'bodyTemp', 'spo2', 'bloodSugar', 'hemoglobin'];
+
+vitalSignsInputIds.forEach(id => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.addEventListener('input', () => {
+      displayVitalSignsStatus();
+      // Recalculate guardrails when vital signs change (affects patient condition)
+      if (selectedDrugs.length > 0) {
+        computeLivePreview();
+      }
+    });
+  }
+});
+
+// Blood type change
+const bloodTypeSelect = document.getElementById('bloodType');
+if (bloodTypeSelect) {
+  bloodTypeSelect.addEventListener('change', checkBloodType);
+}
+
+// Initialize vital signs display on page load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    displayVitalSignsStatus();
+    console.log('✅ Vital signs validation ready');
+    console.log('✅ Guardrail blocking per drug: Active');
+  }, 500);
+});
+
+// ============ END VITAL SIGNS EVENT LISTENERS ============
+    </script>
+
+    <!-- Bottom Taskbar -->
+    <!-- Fast Menu (Circle Buttons) -->
+
+    <!-- Dose calculation module (provides conversions, guardrails, accumulator, and audit helpers) -->
+    <script src="doseCalc.js"></script>
+
+  </body>
+  </html>
